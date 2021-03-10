@@ -1,0 +1,110 @@
+<template>
+    <div class="container">
+        <div class="card card-default">
+            <div class="card-header">Register</div>
+
+            <div class="card-body">
+                <div class="alert alert-danger" v-if="has_error && !success">
+                    <p v-if="error == 'registration_validation_error'">Error!</p>
+                    <p v-else>Error!</p>
+                </div>
+
+                <form autocomplete="off" @submit.prevent="register" v-if="!success" method="post">
+
+                    <div class="form-group" v-bind:class="{ 'has-error': has_error && errors.name }">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" class="form-control" v-model="name">
+                        <span class="help-block" v-if="has_error && errors.name">{{ errors.name }}</span>
+                    </div>
+
+                    <div class="form-group" v-bind:class="{ 'has-error': has_error && errors.email }">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="user@example.com" v-model="email">
+                        <span class="help-block" v-if="has_error && errors.email">{{ errors.email }}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" checked name="gender" value="1" v-model="gender">Male
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="gender" value="2" v-model="gender">Female
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="gender" value="3" v-model="gender">Others
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" v-bind:class="{ 'has-error': has_error && errors.phone }">
+                        <label for="phone">Phone</label>
+                        <input type="text" id="phone" class="form-control" placeholder="01234567890" v-model="phone">
+                        <span class="help-block" v-if="has_error && errors.phone">{{ errors.phone }}</span>
+                    </div>
+
+                    <div class="form-group" v-bind:class="{ 'has-error': has_error && errors.password }">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" v-model="password">
+                        <span class="help-block" v-if="has_error && errors.password">{{ errors.password }}</span>
+                    </div>
+
+                    <div class="form-group" v-bind:class="{ 'has-error': has_error && errors.password }">
+                        <label for="password_confirmation">Confirm password</label>
+                        <input type="password" id="password_confirmation" class="form-control" v-model="password_confirmation">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mr-2">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default {
+        data() {
+            return {
+                name: '',
+                email: '',
+                password: '',
+                password_confirmation: '',
+                phone: '',
+                gender: 1,
+                has_error: false,
+                error: '',
+                errors: {},
+                success: false
+            }
+        },
+
+        methods: {
+            register() {
+                var app = this
+                this.$auth.register({
+                    data: {
+                        name: app.name,
+                        email: app.email,
+                        phone: app.phone,
+                        gender: app.gender,
+                        password: app.password,
+                        password_confirmation: app.password_confirmation
+                    },
+                    success: function () {
+                        app.success = true
+                        this.$router.push({name: 'login', params: {successRegistrationRedirect: true}})
+                    },
+                    error: function (res) {
+                        console.log(res.response.data.errors)
+                        app.has_error = true
+                        app.error = res.response.data.error
+                        app.errors = res.response.data.errors || {}
+                    }
+                })
+            }
+        }
+    }
+</script>

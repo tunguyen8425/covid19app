@@ -1,0 +1,42 @@
+.main-panel {
+  background-color: #f8f8f8;
+}
+.card-body {
+  background-color: #ffff;
+}
+.row {
+  color: #000;
+}
+footer.footer {
+  background-color: #fff;
+}
+.nav-bottom {
+  background-color: #fff !important;
+  color: #000;
+}
+.nav-top.flex-grow-1 {
+  background-color: #fff !important;
+}
+div#profileDropdown {
+  background-color: #fff !important;
+}
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #F8F8F2;
+}
+span.menu-title {
+  font-size: 17px !important;
+}
+a.nav-link {
+  color: #000 !important;
+}
+a {
+  text-decoration: none !important;
+}
+.align-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.swal2-content{
+    width: 100%;
+}
